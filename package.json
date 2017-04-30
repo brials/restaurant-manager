@@ -10,7 +10,6 @@
     "test": "./node_modules/karma/bin/karma start --single-run",
     "test-watch": "./node_modules/karma/bin/karma start",
     "start": "node server.js",
-    "heroku-postbuild": "webpack -p --progress"
   },
   "babel": {
     "presets": [
