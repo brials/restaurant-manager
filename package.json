@@ -9,7 +9,7 @@
     "build-watch": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot",
     "test": "./node_modules/karma/bin/karma start --single-run",
     "test-watch": "./node_modules/karma/bin/karma start",
-    "start": "node server.js",
+    "start": "node server.js"
   },
   "babel": {
     "presets": [
