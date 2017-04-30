@@ -6,6 +6,16 @@
    "semi": ["error", "always"],
    "linebreak-style": [ "error", "unix" ]
  },
+ "plugins": [
+    "react"
+  ],
+  "settings": {
+    "react": {
+      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
+      "pragma": "React",  // Pragma to use, default to "React"
+      "version": "15.0" // React version, default to the latest React stable release
+    }
+  },
  "env": {
    "es6": true,
    "node": true,
@@ -13,9 +23,15 @@
    "jasmine": true
  },
  "ecmaFeatures": {
+   "jsx": true,
    "modules": true,
    "experimentalObjectRestSpread": true,
    "impliedStrict": true
  },
+ "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
  "extends": "eslint:recommended"
 }
