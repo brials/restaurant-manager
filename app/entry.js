@@ -1,9 +1,8 @@
-const React = require('react');
+const React = require('react'); //eslint-disable-line
 const ReactDOM = require('react-dom');
-require('./index.css');
-var App = require('./components/App')
+var App = require('./component/App'); //eslint-disable-line
 
 ReactDOM.render(
   <App />,
-  document.getElementById('app')
+  document.getElementById('app') //eslint-disable-line
 );
