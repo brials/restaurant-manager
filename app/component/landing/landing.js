@@ -2,6 +2,9 @@ const React = require('react');
 const Auth = require('../../service/auth-service');
 const PropTypes = require('prop-types');
 const ReactRouter = require('react-router-dom');
+const Redirect = require('react-router').Redirect //eslint-disable-line
+
+require('./_landing.scss')
 
 class SignUp extends React.Component {
   constructor(props){
@@ -101,7 +104,8 @@ class Landing extends React.Component {
     super(props);
     this.state = {
       viewShown: 'signup',
-      viewHidden: 'signin'
+      viewHidden: 'signin',
+      loggedIn: false
     };
 
     this.updateView = this.updateView.bind(this);
@@ -121,9 +125,17 @@ class Landing extends React.Component {
     .then(res => {
       console.log(res);
       console.log('props',this.props);
+      this.setState(function(){
+        let newState ={
+          loggedIn: true
+        };
+        return newState;
+      });
     });
   }
   render(){
+    console.log('in landing', this.props);
+    console.log('in landing', this.state);
     let view = this.state.viewShown;
     let hidden = this.state.viewHidden;
     return (
@@ -132,6 +144,9 @@ class Landing extends React.Component {
         <SignUp viewShown={view} onSubmit={this.handleSubmit}/>
 
         <button className='btn-std' onClick={this.updateView}>{hidden}</button>
+
+        {this.state.loggedIn &&
+          <Redirect to='/home'/>}
       </div>
     );
   }
