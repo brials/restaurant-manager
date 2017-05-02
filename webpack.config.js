@@ -14,7 +14,8 @@ module.exports = {
   entry: `${__dirname}/app/entry.js`,
   output: {
     filename: 'bundle.js',
-    path: `${__dirname}/build`
+    path: `${__dirname}/build`,
+    publicPath: '/'
   },
   plugins: [
     new HTMLPlugin({
@@ -46,5 +47,8 @@ module.exports = {
         loader: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
       }
     ]
+  },
+  devServer: {
+    historyApiFallback: true,
   }
 };
