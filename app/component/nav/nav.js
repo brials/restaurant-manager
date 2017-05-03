@@ -27,13 +27,8 @@ class Nav extends React.Component{
       <div className='nav-bar'>
         <ul className='nav-list'>
           <li>
-            <NavLink exact activeClassName='active' to='/'>
+            <NavLink exact activeClassName='active' to='/home'>
               Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink exact activeClassName='active' to='/restaurant'>
-              Restaurant
             </NavLink>
           </li>
           <li>
@@ -42,6 +37,7 @@ class Nav extends React.Component{
             </NavLink>
           </li>
         </ul>
+        <h1 className='head'> Restaurant Manager </h1>
         <button className='btn-std' onClick={this.handleLogout}>
         Logout
         </button>
