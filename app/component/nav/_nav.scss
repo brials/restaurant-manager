@@ -6,7 +6,7 @@
   ul {
     float: left;
     overflow: none;
-    width: 30%;
+    width: 20%;
     margin-top: 35px;
     display: flex;
   	flex-direction: row;
@@ -27,11 +27,18 @@
       }
     }
   }
-  button {
+  .head{
+    float: left;
+    color: white;
+    font-size: 48px;
+    margin-top: 25px;
+    margin-left: 15%;
+  }
+  button{
     float: right;
     margin-right: 10%;
-    padding: 14px 3%;
-    margin-top: 17px;
+    padding: 6px 3%;
+    margin-top: 23px;
     border-radius: 16px;
     font-size: 28px;
   }

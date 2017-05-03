@@ -1,122 +1,128 @@
 'use strict';
 const React = require('react');
-var PropTypes = require('prop-types');
-const restApi = require('../../service/restaurant-service');
-//TODO const employeeApi = require('../../service/employee-service');
-const Loading = require('../loading.js') //eslint-disable-line
+const PropTypes = require('prop-types');
 const axios = require('axios');
+const Redirect = require('react-router').Redirect; //eslint-disable-line
 
-class CreateRestaurant extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      name: '',
-      storeHours: '',
-      location: ''
-    };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.handleStoreHoursChange = this.handleStoreHoursChange.bind(this);
-    this.handleCreateRestaurant = this.handleCreateRestaurant.bind(this);
-  }
-  handleNameChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        name: value,
-      };
-    });
-  }
-  handleLocationChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        location: value,
-      };
-    });
-  }
-  handleStoreHoursChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        storeHours: value,
-      };
-    });
-  }
-  handleCreateRestaurant(event) {
-    event.preventDefault();
-    this.props.onSubmit({
-      name: this.state.name,
-      storeHours: this.state.storeHours,
-      location: this.state.location
-    });
-  }
-  render(){
-    return(
-      <form className='create-restaurant' onSubmit={this.handleCreateRestaurant}>
-        <label className='header' htmlFor='name'>name</label>
-        <input id='name'
-          placeholder='name'
-          type='text'
-          value={this.state.name}
-          autoComplete='off'
-          onChange={this.handleNameChange}
-        />
-        <label className='header' htmlFor='storeHours'>StoreHours</label>
-        <input id='storeHours'
-          placeholder='storeHours'
-          type='text'
-          value={this.state.storeHours}
-          autoComplete='off'
-          onChange={this.handleStoreHoursChange}
-        />
-        <label className='header' htmlFor='location'>Location</label>
-        <input id='location'
-          placeholder='location'
-          type='text'
-          value={this.state.location}
-          autoComplete='off'
-          onChange={this.handleLocationChange}
-        />
-        <button
-          className='btn-std'
-          type='submit'
-          disabled={!this.state.name && !this.state.storeHours && !this.state.Location}>
-          Submit Restaurant
-        </button>
-      </form>
-    );
-  }
+const restApi = require('../../service/restaurant-service');
+const employeeApi = require('../../service/employee-service');
+const tableApi = require('../../service/table-service');
+
+const Loading = require('../loading.js') //eslint-disable-line
+const CreateRestaurant = require('./create-restaurant'); //eslint-disable-line
+const CreateEmployee = require('./create-employee'); //eslint-disable-line
+
+
+function RestaurantSelect(props){
+  return (
+    <div className='restaurant-select'>
+      <h1> Restaurants </h1>
+      <ul>
+        {props.restaurants.map(rest => {
+          return (
+            <li
+              style={rest.name === props.selectedRestaurant.name ? { color: '#348921'}: null}
+              key={rest.name}>
+              <p onClick={props.onSelect.bind(null, rest)}>{rest.name}</p>
+              <button onClick={props.onDelete.bind(null, rest)}>delete</button>
+              <button onClick={props.addTable.bind(null, rest)}>Add Table</button>
+            </li>
+          );
+        })}
+      </ul>
+      {props.children}
+    </div>
+  );
 }
 
-CreateRestaurant.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+RestaurantSelect.propTypes ={
+  selectedRestaurant: PropTypes.object.isRequired,
+  restaurants: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  addTable: PropTypes.func.isRequired
+};
+
+function EmployeeSelect(props){
+  return(
+    <div className='employee-select'>
+      <h1> Employee </h1>
+      <ul>
+        {props.employees.map(emp => {
+          return (
+            <li
+            style={emp.name === props.selectedEmployee.name ? { color: '#348921'}: null}
+            onClick={props.onSelect.bind(null, emp)}
+            key={emp.name}>
+            <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
+            <button onClick={props.onDelete.bind(null, emp)}> delete </button>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+EmployeeSelect.propTypes = {
+  selectedEmployee: PropTypes.object.isRequired,
+  employees: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired
 };
 
 class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      restaurants: null,
-      employees: null
+      restaurants: [],
+      employees: [],
+      activeRestaurant: {},
+      activeEmployee: {},
+      loading: true,
+      viewRestaurant: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEmployeeSubmit = this.handleEmployeeSubmit.bind(this);
+    this.updateRestaurant = this.updateRestaurant.bind(this);
+    this.deleteRestaurant = this.deleteRestaurant.bind(this);
+    this.updateEmployee = this.updateEmployee.bind(this);
+    this.deleteEmployee = this.deleteEmployee.bind(this);
+    this.addTableToRestaurant = this.addTableToRestaurant.bind(this);
+    this.linkEmployee = this.linkEmployee.bind(this);
+    this.inspectActive = this.inspectActive.bind(this);
   }
-  //TODO employeeApi.fetchEmployees()
   componentDidMount(){
     axios.all([
       restApi.fetchRestaurants(),
+      employeeApi.fetchEmployees()
     ])
-    .then(rests => {
-      console.log('inside did mount', rests);
+    .then(fetches => {
+      console.log('inside did mount', fetches);
       this.setState(() => {
-        if(rests[0] != undefined){
+        return {loading: false};
+      });
+      this.setState(() => {
+        if(fetches[0].length){
           return{
-            restaurants: rests[0],
+            restaurants: fetches[0],
+            activeRestaurant: fetches[0][0]
           };
         } else {
           return {
-            restaurants: null
+            restaurants: []
+          };
+        }
+      });
+      this.setState(() => {
+        if(fetches[1].length){
+          return{
+            employees: fetches[1],
+            activeEmployee: fetches[1][0]
+          };
+        } else {
+          return {
+            employees: []
           };
         }
       });
@@ -125,25 +131,161 @@ class Home extends React.Component {
   handleSubmit(restaurant){
     restApi.postRestaurant(restaurant)
     .then(restaurant => {
-      console.log('something');
+      console.log('restaurant posted', restaurant);
       this.setState(() => {
-        if(this.state.restaurants === null){
-          return [restaurant];
+        return this.state.restaurants.push(restaurant);
+      });
+    });
+  }
+  handleEmployeeSubmit(employee){
+    employeeApi.postEmployee(employee)
+    .then(employee => {
+      console.log('employee posted', employee);
+      this.setState(() => {
+        return this.state.employees.push(employee);
+      });
+    });
+  }
+  updateRestaurant(rest){
+    this.setState(() => {
+      return {
+        activeRestaurant: rest
+      };
+    });
+  }
+  updateEmployee(employee){
+    this.setState(() => {
+      return {
+        activeEmployee: employee
+      };
+    });
+  }
+  deleteRestaurant(rest){
+    restApi.deleteRestaurant(rest)
+    .then(() => {
+      return restApi.fetchRestaurants();
+    })
+    .then(res => {
+      this.setState(() => {
+        if(res.length === 0) {
+          return{
+            activeRestaurant: {},
+            restaurants: []
+          };
         } else {
-          return this.state.restaurants.push(restaurant);
+          return {
+            restaurants: res,
+            activeRestaurant: res[0]
+          };
         }
       });
     });
   }
+  deleteEmployee(employee){
+    employeeApi.deleteEmployee(employee)
+    .then(() => {
+      return employeeApi.fetchEmployees();
+    })
+    .then(res => {
+      this.setState(() => {
+        if(res.length === 0) {
+          return{
+            activeEmployee: {},
+            employees: []
+          };
+        } else {
+          return {
+            employees: res,
+            activeEmployee: res[0]
+          };
+        }
+      });
+    });
+  }
+  addTableToRestaurant(rest){
+    let activeRest = this.state.activeRestaurant._id;
+    let tableNumber = rest.tables.length + 1;
+    tableApi.postTable({tableNum: tableNumber}, rest)
+    .then(() => {
+      return restApi.fetchRestaurants();
+    })
+    .then(rests => {
+      for(let i = 0; i < rests.length; i++){
+        if(rests[i]._id == activeRest){
+          console.log('active found');
+          var newActive = rests[i];
+        }
+      }
+      this.setState(() => {
+        return {
+          restaurants: rests,
+          activeRestaurant: newActive
+        };
+      });
+    });
+  }
+  linkEmployee(){
+    let activeRest = this.state.activeRestaurant._id;
+    for(let i = 0; i < this.state.activeRestaurant.employees.length; i++){
+      if(this.state.activeEmployee._id == this.state.activeRestaurant.employees[i]._id){
+        return 'already exists';
+      }
+    }
+    employeeApi.connectEmployee(this.state.activeRestaurant, this.state.activeEmployee)
+    .then(() => {
+      return restApi.fetchRestaurants();
+    })
+    .then(rests => {
+      for(let i = 0; i < rests.length; i++){
+        if(rests[i]._id == activeRest){
+          console.log('active found');
+          var newActive = rests[i];
+        }
+      }
+      this.setState(() => {
+        return {
+          restaurants: rests,
+          activeRestaurant: newActive
+        };
+      });
+    });
+  }
+  inspectActive(){
+    this.setState(() => {
+      return {viewRestaurant: true};
+    });
+  }
   render(){
+    let destination = '/restaurant/' + this.state.activeRestaurant._id;
     return (
-      <div>
+      <div className='home'>
         <h1> Manage Your Restaurants </h1>
         <CreateRestaurant onSubmit={this.handleSubmit} />
-        {!this.state.restaurants || !this.state.employees
+        <CreateEmployee onSubmit={this.handleEmployeeSubmit} />
+        {this.state.loading
           ?<Loading />
           :<div>
             </div>}
+        {this.state.restaurants[0] &&
+        <RestaurantSelect
+          selectedRestaurant={this.state.activeRestaurant}
+          onSelect={this.updateRestaurant}
+          restaurants={this.state.restaurants}
+          onDelete={this.deleteRestaurant}
+          addTable={this.addTableToRestaurant}>
+          <button onClick={this.inspectActive}> Inspect Active Restaurant </button>
+        </RestaurantSelect>}
+        {this.state.viewRestaurant &&
+          <Redirect to={destination} />}
+        {this.state.employees[0] &&
+        <EmployeeSelect
+          selectedEmployee={this.state.activeEmployee}
+          onSelect={this.updateEmployee}
+          employees={this.state.employees}
+          onDelete={this.deleteEmployee}/>}
+
+        {this.state.employees[0] && this.state.restaurants[0] &&
+          <button onClick={this.linkEmployee}> Link Actives </button>}
       </div>
     );
   }

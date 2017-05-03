@@ -3,8 +3,8 @@
 const axios = require('axios');
 
 module.exports = {
-  postRestaurant: function(restaurant){
-    let url = `${__API_URL__}/api/restaurant`; //eslint-disable-line
+  postEmployee: function(employee){
+    let url = `${__API_URL__}/api/employee`; //eslint-disable-line
     let config = {
       headers: {
         'Content-Type': 'application/json',
@@ -13,15 +13,16 @@ module.exports = {
       }
     };
 
-    return axios.post(url, restaurant, config)
+    return axios.post(url, employee, config)
     .then(res => {
       console.log('success', res.data);
       return res.data;
     });
 
   },
-  fetchRestaurants: function(){
-    let url = `${__API_URL__}/api/restaurant`; //eslint-disable-line
+
+  fetchEmployees: function(){
+    let url = `${__API_URL__}/api/employee`; //eslint-disable-line
     let config = {
       headers: {
 
@@ -36,8 +37,8 @@ module.exports = {
       return res.data;
     });
   },
-  deleteRestaurant: function(rest){
-    let url = `${__API_URL__}/api/restaurant/${rest._id}`; //eslint-disable-line
+  deleteEmployee: function(employee){
+    let url = `${__API_URL__}/api/employee/${employee._id}`; //eslint-disable-line
     let config = {
       headers: {
         'Accept': 'application/json',
@@ -46,6 +47,21 @@ module.exports = {
     };
 
     return axios.delete(url, config)
+    .then(res => {
+      console.log('success', res.data);
+      return res.data;
+    });
+  },
+  connectEmployee(rest, emp){
+    let url = `${__API_URL__}/api/restaurant/${rest._id}/addEmployee/${emp._id}`; //eslint-disable-line
+    let config = {
+      headers: {
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.token}` //eslint-disable-line
+      }
+    };
+
+    return axios.put(url, null, config)
     .then(res => {
       console.log('success', res.data);
       return res.data;
