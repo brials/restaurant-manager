@@ -51,5 +51,20 @@ module.exports = {
       console.log('success', res.data);
       return res.data;
     });
+  },
+  connectEmployee(rest, emp){
+    let url = `${__API_URL__}/api/restaurant/${rest._id}/addEmployee/${emp._id}`; //eslint-disable-line
+    let config = {
+      headers: {
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.token}` //eslint-disable-line
+      }
+    };
+
+    return axios.put(url, null, config)
+    .then(res => {
+      console.log('success', res.data);
+      return res.data;
+    });
   }
 };

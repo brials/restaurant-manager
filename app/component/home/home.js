@@ -2,6 +2,7 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 const axios = require('axios');
+const Redirect = require('react-router').Redirect; //eslint-disable-line
 
 const restApi = require('../../service/restaurant-service');
 const employeeApi = require('../../service/employee-service');
@@ -29,6 +30,7 @@ function RestaurantSelect(props){
           );
         })}
       </ul>
+      {props.children}
     </div>
   );
 }
@@ -77,7 +79,8 @@ class Home extends React.Component {
       employees: [],
       activeRestaurant: {},
       activeEmployee: {},
-      loading: true
+      loading: true,
+      viewRestaurant: false
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEmployeeSubmit = this.handleEmployeeSubmit.bind(this);
@@ -86,6 +89,8 @@ class Home extends React.Component {
     this.updateEmployee = this.updateEmployee.bind(this);
     this.deleteEmployee = this.deleteEmployee.bind(this);
     this.addTableToRestaurant = this.addTableToRestaurant.bind(this);
+    this.linkEmployee = this.linkEmployee.bind(this);
+    this.inspectActive = this.inspectActive.bind(this);
   }
   componentDidMount(){
     axios.all([
@@ -219,9 +224,41 @@ class Home extends React.Component {
       });
     });
   }
+  linkEmployee(){
+    let activeRest = this.state.activeRestaurant._id;
+    for(let i = 0; i < this.state.activeRestaurant.employees.length; i++){
+      if(this.state.activeEmployee._id == this.state.activeRestaurant.employees[i]._id){
+        return 'already exists';
+      }
+    }
+    employeeApi.connectEmployee(this.state.activeRestaurant, this.state.activeEmployee)
+    .then(() => {
+      return restApi.fetchRestaurants();
+    })
+    .then(rests => {
+      for(let i = 0; i < rests.length; i++){
+        if(rests[i]._id == activeRest){
+          console.log('active found');
+          var newActive = rests[i];
+        }
+      }
+      this.setState(() => {
+        return {
+          restaurants: rests,
+          activeRestaurant: newActive
+        };
+      });
+    });
+  }
+  inspectActive(){
+    this.setState(() => {
+      return {viewRestaurant: true};
+    });
+  }
   render(){
+    let destination = '/restaurant/' + this.state.activeRestaurant._id;
     return (
-      <div>
+      <div className='home'>
         <h1> Manage Your Restaurants </h1>
         <CreateRestaurant onSubmit={this.handleSubmit} />
         <CreateEmployee onSubmit={this.handleEmployeeSubmit} />
@@ -235,13 +272,20 @@ class Home extends React.Component {
           onSelect={this.updateRestaurant}
           restaurants={this.state.restaurants}
           onDelete={this.deleteRestaurant}
-          addTable={this.addTableToRestaurant}/>}
+          addTable={this.addTableToRestaurant}>
+          <button onClick={this.inspectActive}> Inspect Active Restaurant </button>
+        </RestaurantSelect>}
+        {this.state.viewRestaurant &&
+          <Redirect to={destination} />}
         {this.state.employees[0] &&
         <EmployeeSelect
           selectedEmployee={this.state.activeEmployee}
           onSelect={this.updateEmployee}
           employees={this.state.employees}
           onDelete={this.deleteEmployee}/>}
+
+        {this.state.employees[0] && this.state.restaurants[0] &&
+          <button onClick={this.linkEmployee}> Link Actives </button>}
       </div>
     );
   }
