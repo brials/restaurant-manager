@@ -1,96 +1,35 @@
 'use strict';
 const React = require('react');
-var PropTypes = require('prop-types');
+const PropTypes = require('prop-types');
 const restApi = require('../../service/restaurant-service');
-//TODO const employeeApi = require('../../service/employee-service');
+const employeeApi = require('../../service/employee-service');
 const Loading = require('../loading.js') //eslint-disable-line
 const axios = require('axios');
+const CreateRestaurant = require('./create-restaurant'); //eslint-disable-line
+const CreateEmployee = require('./create-employee'); //eslint-disable-line
 
-class CreateRestaurant extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      name: '',
-      storeHours: '',
-      location: ''
-    };
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleLocationChange = this.handleLocationChange.bind(this);
-    this.handleStoreHoursChange = this.handleStoreHoursChange.bind(this);
-    this.handleCreateRestaurant = this.handleCreateRestaurant.bind(this);
-  }
-  handleNameChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        name: value,
-      };
-    });
-  }
-  handleLocationChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        location: value,
-      };
-    });
-  }
-  handleStoreHoursChange(event){
-    let value = event.target.value;
-    this.setState(function(){
-      return{
-        storeHours: value,
-      };
-    });
-  }
-  handleCreateRestaurant(event) {
-    event.preventDefault();
-    this.props.onSubmit({
-      name: this.state.name,
-      storeHours: this.state.storeHours,
-      location: this.state.location
-    });
-  }
-  render(){
-    return(
-      <form className='create-restaurant' onSubmit={this.handleCreateRestaurant}>
-        <label className='header' htmlFor='name'>name</label>
-        <input id='name'
-          placeholder='name'
-          type='text'
-          value={this.state.name}
-          autoComplete='off'
-          onChange={this.handleNameChange}
-        />
-        <label className='header' htmlFor='storeHours'>StoreHours</label>
-        <input id='storeHours'
-          placeholder='storeHours'
-          type='text'
-          value={this.state.storeHours}
-          autoComplete='off'
-          onChange={this.handleStoreHoursChange}
-        />
-        <label className='header' htmlFor='location'>Location</label>
-        <input id='location'
-          placeholder='location'
-          type='text'
-          value={this.state.location}
-          autoComplete='off'
-          onChange={this.handleLocationChange}
-        />
-        <button
-          className='btn-std'
-          type='submit'
-          disabled={!this.state.name && !this.state.storeHours && !this.state.Location}>
-          Submit Restaurant
-        </button>
-      </form>
-    );
-  }
+
+function RestaurantSelect(props){
+  return (
+    <ul>
+      {props.restaurants.map(rest => {
+        return (
+          <li
+            style={rest.name === props.selectedRestaurant.name ? { color: '#348921'}: null}
+            onClick={props.onSelect.bind(null, rest)}
+            key={rest.name}>
+            {rest.name}
+          </li>
+        );
+      })}
+    </ul>
+  );
 }
 
-CreateRestaurant.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
+RestaurantSelect.propTypes ={
+  selectedRestaurant: PropTypes.object.isRequired,
+  restaurants: PropTypes.array.isRequired,
+  onSelect: PropTypes.func.isRequired
 };
 
 class Home extends React.Component {
@@ -98,9 +37,12 @@ class Home extends React.Component {
     super(props);
     this.state = {
       restaurants: null,
-      employees: null
+      employees: null,
+      activeRestaurant: null
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEmployeeSubmit = this.handleEmployeeSubmit.bind(this);
+    this.updateRestaurant = this.updateRestaurant.bind(this);
   }
   //TODO employeeApi.fetchEmployees()
   componentDidMount(){
@@ -110,9 +52,10 @@ class Home extends React.Component {
     .then(rests => {
       console.log('inside did mount', rests);
       this.setState(() => {
-        if(rests[0] != undefined){
+        if(rests[0].length){
           return{
             restaurants: rests[0],
+            activeRestaurant: rests[0][0]
           };
         } else {
           return {
@@ -125,7 +68,7 @@ class Home extends React.Component {
   handleSubmit(restaurant){
     restApi.postRestaurant(restaurant)
     .then(restaurant => {
-      console.log('something');
+      console.log('restaurant posted', restaurant);
       this.setState(() => {
         if(this.state.restaurants === null){
           return [restaurant];
@@ -135,15 +78,38 @@ class Home extends React.Component {
       });
     });
   }
+  handleEmployeeSubmit(employee){
+    employeeApi.postEmployee(employee)
+    .then(employee => {
+      console.log('employee posted', employee);
+      this.setState(() => {
+        if(this.state.employees === null){
+          return { employees: [employee]};
+        } else {
+          return this.state.employees.push(employee);
+        }
+      });
+    });
+  }
+  updateRestaurant(rest){
+    this.setState(() => {
+      return {
+        activeRestaurant: rest
+      };
+    });
+  }
   render(){
     return (
       <div>
         <h1> Manage Your Restaurants </h1>
         <CreateRestaurant onSubmit={this.handleSubmit} />
+        <CreateEmployee onSubmit={this.handleEmployeeSubmit} />
         {!this.state.restaurants || !this.state.employees
           ?<Loading />
           :<div>
             </div>}
+        {this.state.restaurants &&
+        <RestaurantSelect selectedRestaurant={this.state.activeRestaurant} onSelect={this.updateRestaurant} restaurants={this.state.restaurants} />}
       </div>
     );
   }
