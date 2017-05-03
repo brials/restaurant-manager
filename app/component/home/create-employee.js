@@ -51,6 +51,7 @@ class CreateEmployee extends React.Component {
   render(){
     return(
       <form className='create-employee' onSubmit={this.handleCreateEmployee}>
+        <h2> Hire A New Employee </h2>
         <label className='header' htmlFor='name'>name</label>
         <input id='name'
           placeholder='name'

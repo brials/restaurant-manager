@@ -49,6 +49,7 @@ class CreateRestaurant extends React.Component {
   render(){
     return(
       <form className='create-restaurant' onSubmit={this.handleCreateRestaurant}>
+        <h2> Input A New Restaurant </h2>
         <label className='header' htmlFor='name'>name</label>
         <input id='name'
           placeholder='name'

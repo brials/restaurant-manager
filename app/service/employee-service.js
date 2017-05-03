@@ -36,5 +36,20 @@ module.exports = {
       console.log('success', res.data);
       return res.data;
     });
+  },
+  deleteEmployee: function(employee){
+    let url = `${__API_URL__}/api/employee/${employee._id}`; //eslint-disable-line
+    let config = {
+      headers: {
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.token}` //eslint-disable-line
+      }
+    };
+
+    return axios.delete(url, config)
+    .then(res => {
+      console.log('success', res.data);
+      return res.data;
+    });
   }
 };
