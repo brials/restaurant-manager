@@ -52,10 +52,9 @@ function EmployeeSelect(props){
           return (
             <li
             style={emp.name === props.selectedEmployee.name ? { color: '#348921'}: null}
-            onClick={props.onSelect.bind(null, emp)}
-            key={emp.name}>
-            <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
-            <button onClick={props.onDelete.bind(null, emp)}> delete </button>
+              key={emp.name}>
+              <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
+              <button onClick={props.onDelete.bind(null, emp)}> delete </button>
             </li>
           );
         })}
