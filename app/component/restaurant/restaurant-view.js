@@ -1,9 +1,9 @@
 'use strict';
 const React = require('react');
 const PropTypes = require('prop-types');
+const Redirect = require('react-router').Redirect; //eslint-disable-line
 
 const restApi = require('../../service/restaurant-service');
-const customerApi = require('../../service/customer-service');
 const tableApi = require('../../service/table-service');
 const employeeApi = require('../../service/employee-service');
 
@@ -61,8 +61,7 @@ function TableSelect(props){
                 style={table.tableNum === props.selectedTable.tableNum ? {color: '#348921'}: null}>
                 {table.tableNum} </p>
               <p> Current Customers: {table.customers.length}</p>
-              <button onClick={props.addCustomer.bind(null, table)}> Add Customer </button>
-
+              <button onClick={props.inspectTable.bind(null, table)}> Inspect Table </button>
               <p> {employee} is currently serving </p>
             </div>
           );
@@ -76,8 +75,8 @@ TableSelect.propTypes ={
   onSelect: PropTypes.func.isRequired,
   tables: PropTypes.array.isRequired,
   selectedTable: PropTypes.object.isRequired,
-  addCustomer: PropTypes.func.isRequired,
-  employees: PropTypes.array.isRequired
+  employees: PropTypes.array.isRequired,
+  inspectTable: PropTypes.func.isRequired,
 };
 
 function RestaurantDetails(props){
@@ -100,14 +99,16 @@ class RestaurantView extends React.Component {
     super(props);
     this.state ={
       restaurant: {},
+      activeTable: {},
       activeEmployee: {},
       loading: true,
+      inspectTable: false,
     };
     this.updateEmployee = this.updateEmployee.bind(this);
     this.updateTable = this.updateTable.bind(this);
-    this.addCustomer = this.addCustomer.bind(this);
     this.assignEmployee = this.assignEmployee.bind(this);
     this.clockOutEmployee = this.clockOutEmployee.bind(this);
+    this.inspectTable = this.inspectTable.bind(this);
   }
   componentDidMount(){
     restApi.fetchRestaurant(this.props.match.url.match(/[^/]+$/g)[0])
@@ -134,28 +135,6 @@ class RestaurantView extends React.Component {
       return {
         activeTable: table
       };
-    });
-  }
-  addCustomer(table){
-    customerApi.postCustomer(table._id)
-    .then(() => {
-      return restApi.fetchRestaurant(this.state.restaurant._id);
-    })
-    .then(rests => {
-      let activeTableId = this.state.activeTable._id.toString();
-      let index = -1;
-      for(let i = 0; i < rests.tables.length; i++){
-        if(rests.tables[i]._id.toString() == activeTableId){
-
-          index = i;
-        }
-      }
-      this.setState(() => {
-        return {
-          restaurant: rests,
-          activeTable: rests.tables[index],
-        };
-      });
     });
   }
   assignEmployee(){
@@ -211,10 +190,20 @@ class RestaurantView extends React.Component {
       });
     });
   }
+  inspectTable(){
+    this.setState(() => {
+      return {
+        inspectTable: true
+      };
+    });
+  }
   render(){
     let rest = this.state.restaurant;
+    var destination = '/table/' + this.state.activeTable._id;
     return (
       <div className='restaurant-view'>
+        {this.state.inspectTable &&
+          <Redirect to={destination} />}
         {this.state.loading
           ? <Loading />
           : <div>
@@ -230,7 +219,8 @@ class RestaurantView extends React.Component {
                 onSelect={this.updateTable}
                 tables={rest.tables}
                 addCustomer={this.addCustomer}
-                employees={rest.employees} />
+                employees={rest.employees}
+                inspectTable={this.inspectTable}/>
             </div>}
       </div>
     );

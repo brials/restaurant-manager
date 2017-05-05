@@ -10,7 +10,8 @@ const Link = require('react-router-dom').Link; //eslint-disable-line
 const Landing = require('./landing/landing'); //eslint-disable-line
 const Nav = require('./nav/nav'); //eslint-disable-line
 const Home = require('./home/home'); //eslint-disable-line
-const RestaurantView = require('./restaurant/restaurantView'); //eslint-disable-line
+const RestaurantView = require('./restaurant/restaurant-view'); //eslint-disable-line
+const TableView = require('./table/table-view.js');
 
 console.log(ReactRouter);
 
@@ -23,11 +24,12 @@ class App extends React.Component {
         <Nav />
         {!localStorage.token && //eslint-disable-line
           <Redirect to='/login'/>}
-
           <Switch>
-            <Route path='/login' handleLoginToggle={this.handleLoginToggle} component={Landing} />
+            <Route exact path='/' component={Home} />
             <Route path='/home' component={Home} />
+            <Route path='/login' component={Landing} />
             <Route path='/restaurant/:restaurantId' component={RestaurantView} />
+            <Route path='/table/:tableId' component={TableView} />
             <Route render={function() {
               return <p>Not Found</p>;
             }} />

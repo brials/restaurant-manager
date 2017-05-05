@@ -33,5 +33,19 @@ module.exports = {
       console.log('employee controlled table', res.data);
       return res.data;
     });
+  },
+  fetchTable: function(tableId){
+    let url = `${__API_URL__}/api/table/${tableId}`; //eslint-disable-line
+    let config = {
+      headers: {
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.token}` //eslint-disable-line
+      }
+    };
+    return axios.get(url, config)
+    .then(res => {
+      console.log('employee fetched table', res.data);
+      return res.data;
+    });
   }
 };
