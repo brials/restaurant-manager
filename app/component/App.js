@@ -12,6 +12,7 @@ const Nav = require('./nav/nav'); //eslint-disable-line
 const Home = require('./home/home'); //eslint-disable-line
 const RestaurantView = require('./restaurant/restaurant-view'); //eslint-disable-line
 const TableView = require('./table/table-view.js');
+const AboutView = require('./about/about-view'); //eslint-disable-line
 
 console.log(ReactRouter);
 
@@ -30,6 +31,7 @@ class App extends React.Component {
             <Route path='/login' component={Landing} />
             <Route path='/restaurant/:restaurantId' component={RestaurantView} />
             <Route path='/table/:tableId' component={TableView} />
+            <Route path='/about' component={AboutView} />
             <Route render={function() {
               return <p>Not Found</p>;
             }} />
