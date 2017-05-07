@@ -12,25 +12,28 @@ const Loading = require('../loading.js') //eslint-disable-line
 const CreateRestaurant = require('./create-restaurant'); //eslint-disable-line
 const CreateEmployee = require('./create-employee'); //eslint-disable-line
 
+require('./_home.scss');
 
 function RestaurantSelect(props){
   return (
     <div className='restaurant-select'>
       <h1> Restaurants </h1>
+      {props.children}
       <ul>
         {props.restaurants.map(rest => {
           return (
-            <li
-              style={rest.name === props.selectedRestaurant.name ? { color: '#348921'}: null}
+            <li onClick={props.onSelect.bind(null, rest)}
+              style={rest.name === props.selectedRestaurant.name ? { color: '#0cd30d'}: null}
               key={rest.name}>
-              <p onClick={props.onSelect.bind(null, rest)}>{rest.name}</p>
+              <p >{rest.name}</p>
+              <p> Tables: {rest.tables.length} </p>
+              <p> Employees: {rest.employees.length} </p>
               <button onClick={props.onDelete.bind(null, rest)}>delete</button>
               <button onClick={props.addTable.bind(null, rest)}>Add Table</button>
             </li>
           );
         })}
       </ul>
-      {props.children}
     </div>
   );
 }
@@ -46,12 +49,12 @@ RestaurantSelect.propTypes ={
 function EmployeeSelect(props){
   return(
     <div className='employee-select'>
-      <h1> Employee </h1>
+      <h1> Employees </h1>
       <ul>
         {props.employees.map(emp => {
           return (
             <li
-            style={emp.name === props.selectedEmployee.name ? { color: '#348921'}: null}
+            style={emp.name === props.selectedEmployee.name ? { color: '#0cd30d'}: null}
               key={emp.name}>
               <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
               <button onClick={props.onDelete.bind(null, emp)}> delete </button>
@@ -259,8 +262,10 @@ class Home extends React.Component {
     return (
       <div className='home'>
         <h1> Manage Your Restaurants </h1>
-        <CreateRestaurant onSubmit={this.handleSubmit} />
-        <CreateEmployee onSubmit={this.handleEmployeeSubmit} />
+        <div className='create'>
+          <CreateRestaurant onSubmit={this.handleSubmit} />
+          <CreateEmployee onSubmit={this.handleEmployeeSubmit} />
+        </div>
         {this.state.loading
           ?<Loading />
           :<div>
@@ -272,16 +277,16 @@ class Home extends React.Component {
           restaurants={this.state.restaurants}
           onDelete={this.deleteRestaurant}
           addTable={this.addTableToRestaurant}>
-          <button onClick={this.inspectActive}> Inspect Active Restaurant </button>
+          <button onClick={this.inspectActive} className='inspect'> Inspect Active Restaurant </button>
         </RestaurantSelect>}
         {this.state.viewRestaurant &&
           <Redirect to={destination} />}
         {this.state.employees[0] &&
-        <EmployeeSelect
-          selectedEmployee={this.state.activeEmployee}
-          onSelect={this.updateEmployee}
-          employees={this.state.employees}
-          onDelete={this.deleteEmployee}/>}
+          <EmployeeSelect
+            selectedEmployee={this.state.activeEmployee}
+            onSelect={this.updateEmployee}
+            employees={this.state.employees}
+            onDelete={this.deleteEmployee}/>}
 
         {this.state.employees[0] && this.state.restaurants[0] &&
           <button onClick={this.linkEmployee}> Link Actives </button>}

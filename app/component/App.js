@@ -21,22 +21,24 @@ class App extends React.Component {
   render(){
     return (
       <Router>
-        <div className='container'>
-        <Nav />
-        {!localStorage.token && //eslint-disable-line
-          <Redirect to='/login'/>}
-          <Switch>
-            <Route exact path='/' component={Home} />
-            <Route path='/home' component={Home} />
-            <Route path='/login' component={Landing} />
-            <Route path='/restaurant/:restaurantId' component={RestaurantView} />
-            <Route path='/table/:tableId' component={TableView} />
-            <Route path='/about' component={AboutView} />
-            <Route render={function() {
-              return <p>Not Found</p>;
-            }} />
-          </Switch>
+        <div>
+          <Nav />
+          <div className='container' >
+            {!localStorage.token && //eslint-disable-line
+              <Redirect to='/login'/>}
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route path='/home' component={Home} />
+                <Route path='/login' component={Landing} />
+                <Route path='/restaurant/:restaurantId' component={RestaurantView} />
+                <Route path='/table/:tableId' component={TableView} />
+                <Route path='/about' component={AboutView} />
+                <Route render={function() {
+                  return <p>Not Found</p>;
+                }} />
+              </Switch>
           </div>
+        </div>
       </Router>
     );
   }

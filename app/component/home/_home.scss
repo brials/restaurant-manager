@@ -1,0 +1,49 @@
+@import "../../scss/lib/theme/_vars.scss";
+
+.home{
+
+  h1{
+    margin: 30px 0;
+    clear:both;
+  }
+  .create{
+    h2{
+      font-size: 24px;
+      margin: 15px 0;
+    }
+    input{
+      padding: 8px;
+      margin-right: 30px;
+    }
+    button{
+      padding: 1% 2%;
+      border-radius: 15px;
+      background: #0cd30d;
+      color: white;
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+    }
+  }
+  .restaurant-select{
+    .inspect{
+      padding: 1%;
+      border-radius: 17px;
+      background: #0cd30d;
+      color: white;
+      box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      margin-top: -10px;
+      margin-bottom: 20px;
+    }
+    ul{
+      height: 200px;
+      li {
+        width: 200px;
+        height: 200px;
+        float: left;
+        margin-right: 30px;
+        background: blue;
+      }
+    }
+  }
+}

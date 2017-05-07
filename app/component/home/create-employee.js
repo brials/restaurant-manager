@@ -52,34 +52,36 @@ class CreateEmployee extends React.Component {
     return(
       <form className='create-employee' onSubmit={this.handleCreateEmployee}>
         <h2> Hire A New Employee </h2>
-        <label className='header' htmlFor='name'>name</label>
+        <label className='header' htmlFor='name'>Name: </label>
         <input id='name'
           placeholder='name'
           type='text'
           value={this.state.name}
           autoComplete='off'
           onChange={this.handleNameChange}
+          required
         />
-        <label className='header' htmlFor='hoursLogged'>HoursLogged</label>
+        <label className='header' htmlFor='hoursLogged'>HoursLogged: </label>
         <input id='hoursLogged'
           placeholder='hoursLogged'
           type='number'
           value={this.state.hoursLogged}
           autoComplete='off'
           onChange={this.handleHoursLoggedChange}
+          required
         />
-        <label className='header' htmlFor='employeeTitle'>EmployeeTitle</label>
+        <label className='header' htmlFor='employeeTitle'>EmployeeTitle: </label>
         <input id='employeeTitle'
-          placeholder='employeeTitle'
+          placeholder='employee title'
           type='text'
           value={this.state.employeeTitle}
           autoComplete='off'
           onChange={this.handleEmployeeTitleChange}
+          required
         />
         <button
           className='btn-std'
-          type='submit'
-          disabled={!this.state.name && !this.state.hoursLogged && !this.state.EmployeeTitle}>
+          type='submit'>
           Submit Employee
         </button>
       </form>

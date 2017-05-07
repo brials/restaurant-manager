@@ -19,7 +19,7 @@ function EmployeeSelect(props){
         {props.employees.map(emp => {
           return (
             <li
-              style={emp.name === props.selectedEmployee.name ? { color: '#348921'}: null}
+              style={emp.name === props.selectedEmployee.name ? { color: '#0cd30d'}: null}
               key={emp.name}>
               <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
             </li>
@@ -58,7 +58,7 @@ function TableSelect(props){
               style={table.customers.length ? {background: 'blue'}: {background: '#d46a6a'}}
               onClick={props.onSelect.bind(null, table)}>
               <p
-                style={table.tableNum === props.selectedTable.tableNum ? {color: '#348921'}: null}>
+                style={table.tableNum === props.selectedTable.tableNum ? {color: '#0cd30d'}: null}>
                 {table.tableNum} </p>
               <p> Current Customers: {table.customers.length}</p>
               <button onClick={props.inspectTable.bind(null, table)}> Inspect Table </button>

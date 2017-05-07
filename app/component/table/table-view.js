@@ -23,7 +23,7 @@ function MenuItemSelect(props){
         {props.menuItems.map(menuItem => {
           return (
             <li
-              style={menuItem.name === props.selectedMenuItem.name ? { color: '#348921'}: null}
+              style={menuItem.name === props.selectedMenuItem.name ? { color: '#0cd30d'}: null}
               key={menuItem.name}>
               <p onClick={props.onSelect.bind(null, menuItem)}>{menuItem.name}</p>
             </li>
@@ -52,7 +52,7 @@ function CustomerSelect(props){
               style={customer.menuitems.length ? {background: '#d46a6a'}: {background: 'purple'}}
               onClick={props.onSelect.bind(null, customer)}
               key={customer.name}>
-              <p style={customer.name === props.selectedCustomer.name ? { color: '#348921'}: null}>
+              <p style={customer.name === props.selectedCustomer.name ? { color: '#0cd30d'}: null}>
                 {customer.name}
               </p>
               <button onClick={props.onPurchase.bind(null, customer)}> Buy Active Item </button>

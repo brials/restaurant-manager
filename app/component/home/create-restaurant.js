@@ -50,34 +50,36 @@ class CreateRestaurant extends React.Component {
     return(
       <form className='create-restaurant' onSubmit={this.handleCreateRestaurant}>
         <h2> Input A New Restaurant </h2>
-        <label className='header' htmlFor='name'>name</label>
+        <label className='header' htmlFor='name'>Name: </label>
         <input id='name'
           placeholder='name'
           type='text'
           value={this.state.name}
           autoComplete='off'
           onChange={this.handleNameChange}
+          required
         />
-        <label className='header' htmlFor='storeHours'>StoreHours</label>
+        <label className='header' htmlFor='storeHours'>StoreHours: </label>
         <input id='storeHours'
           placeholder='storeHours'
           type='text'
           value={this.state.storeHours}
           autoComplete='off'
           onChange={this.handleStoreHoursChange}
+          required
         />
-        <label className='header' htmlFor='location'>Location</label>
+        <label className='header' htmlFor='location'>Location: </label>
         <input id='location'
           placeholder='location'
           type='text'
           value={this.state.location}
           autoComplete='off'
           onChange={this.handleLocationChange}
+          required
         />
         <button
           className='btn-std'
-          type='submit'
-          disabled={!this.state.name && !this.state.storeHours && !this.state.Location}>
+          type='submit'>
           Submit Restaurant
         </button>
       </form>

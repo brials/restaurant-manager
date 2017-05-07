@@ -62,14 +62,16 @@ class SignUp extends React.Component {
           value={this.state.username}
           autoComplete='off'
           onChange={this.handleUsernameChange}
+          required
         />
         <label className='header' htmlFor='password'>Password</label>
         <input id='password'
           placeholder='password'
-          type='text'
+          type='password'
           value={this.state.password}
           autoComplete='off'
           onChange={this.handlePasswordChange}
+          required
         />
 
         {this.props.viewShown === 'signup' &&
@@ -77,10 +79,11 @@ class SignUp extends React.Component {
             <label className='header' htmlFor='email'>Email</label>
             <input id='email'
               placeholder='email'
-              type='text'
+              type='email'
               value={this.state.email}
               autoComplete='off'
               onChange={this.handleEmailChange}
+              required
             />
           </div>}
         <button
