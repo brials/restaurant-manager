@@ -55,7 +55,7 @@ class SignUp extends React.Component {
   render(){
     return (
       <form className='signup' onSubmit={this.handleSignUp}>
-        <label className='header' htmlFor='username'>Username</label>
+        <label className='header' htmlFor='username'>Username: </label>
         <input id='username'
           placeholder='username'
           type='text'
@@ -64,7 +64,7 @@ class SignUp extends React.Component {
           onChange={this.handleUsernameChange}
           required
         />
-        <label className='header' htmlFor='password'>Password</label>
+        <label className='header' htmlFor='password'>Password: </label>
         <input id='password'
           placeholder='password'
           type='password'
@@ -73,10 +73,12 @@ class SignUp extends React.Component {
           onChange={this.handlePasswordChange}
           required
         />
+        <div>
+        </div>
 
         {this.props.viewShown === 'signup' &&
           <div>
-            <label className='header' htmlFor='email'>Email</label>
+            <label className='header' htmlFor='email'>Email: </label>
             <input id='email'
               placeholder='email'
               type='email'
@@ -142,11 +144,11 @@ class Landing extends React.Component {
     let view = this.state.viewShown;
     let hidden = this.state.viewHidden;
     return (
-      <div>
+      <div className='landing'>
         <h1> {view} </h1>
         <SignUp viewShown={view} onSubmit={this.handleSubmit}/>
 
-        <button className='btn-std' onClick={this.updateView}>{hidden}</button>
+        <button className='btn-std' onClick={this.updateView}>{hidden} instead?</button>
 
         {this.state.loggedIn &&
           <Redirect to='/home'/>}

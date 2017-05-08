@@ -41,7 +41,7 @@ class CreateMenuItem extends React.Component {
     return(
       <form className='create-menuItem' onSubmit={this.handleCreateMenuItem}>
         <h2> New MenuItem </h2>
-        <label className='header' htmlFor='name'>name</label>
+        <label className='header' htmlFor='name'>Name: </label>
         <input id='name'
           placeholder='name'
           type='text'
@@ -49,7 +49,7 @@ class CreateMenuItem extends React.Component {
           autoComplete='off'
           onChange={this.handleNameChange}
         />
-        <label className='header' htmlFor='price'>Price</label>
+        <label className='header' htmlFor='price'>Price: </label>
         <input id='price'
           placeholder='price'
           type='number'
@@ -58,7 +58,7 @@ class CreateMenuItem extends React.Component {
           onChange={this.handlePriceChange}
         />
         <button
-          className='btn-std'
+          className='active'
           type='submit'
           disabled={!this.state.name && !this.state.price}>
           Submit MenuItem

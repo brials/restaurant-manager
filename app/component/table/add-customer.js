@@ -29,7 +29,7 @@ class AddCustomer extends React.Component{
       <div className='add-customer'>
         <form className='create-customer' onSubmit={this.handleAddCustomer}>
           <h2> New Customer </h2>
-          <label className='header' htmlFor='name'>name</label>
+          <label className='header' htmlFor='name'>Name: </label>
           <input id='name'
             placeholder='name'
             type='text'
@@ -38,7 +38,7 @@ class AddCustomer extends React.Component{
             onChange={this.handleNameChange}
           />
           <button
-            className='btn-std'
+            className='active'
             type='submit'
             disabled={!this.state.name && !this.state.price}>
             Submit Customer

@@ -14,7 +14,7 @@ require('./_restaurant-view.scss');
 function EmployeeSelect(props){
   return(
     <div className='employee-select'>
-      <h2> Employee </h2>
+      <h2> Employees </h2>
       <ul>
         {props.employees.map(emp => {
           return (
@@ -212,8 +212,8 @@ class RestaurantView extends React.Component {
                 selectedEmployee={this.state.activeEmployee}
                 onSelect={this.updateEmployee}
                 employees={rest.employees}/>
-              <button onClick={this.assignEmployee}> Assign Employee to Table </button>
-              <button onClick={this.clockOutEmployee}> Clock Out Active Employee </button>
+              <button onClick={this.assignEmployee} className='clock'> Assign Employee to Table </button>
+              <button onClick={this.clockOutEmployee} className='clock'> Clock Out Active Employee </button>
               <TableSelect
                 selectedTable={this.state.activeTable}
                 onSelect={this.updateTable}

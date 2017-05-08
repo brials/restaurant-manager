@@ -38,6 +38,7 @@ class App extends React.Component {
                 }} />
               </Switch>
           </div>
+          <footer> </footer>
         </div>
       </Router>
     );

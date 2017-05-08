@@ -25,7 +25,7 @@ function MenuItemSelect(props){
             <li
               style={menuItem.name === props.selectedMenuItem.name ? { color: '#0cd30d'}: null}
               key={menuItem.name}>
-              <p onClick={props.onSelect.bind(null, menuItem)}>{menuItem.name}</p>
+              <p onClick={props.onSelect.bind(null, menuItem)}>{menuItem.name}, ${menuItem.price}</p>
             </li>
           );
         })}
@@ -43,13 +43,13 @@ MenuItemSelect.propTypes = {
 function CustomerSelect(props){
   return(
     <div className='customer-select'>
-      <h2> Customer </h2>
+      <h2> Customers </h2>
       <ul>
         {props.customers.map(customer => {
           return (
             <li
               className='customer-square'
-              style={customer.menuitems.length ? {background: '#d46a6a'}: {background: 'purple'}}
+              style={customer.menuitems.length ? {background: 'blue'}: {background: 'purple'}}
               onClick={props.onSelect.bind(null, customer)}
               key={customer.name}>
               <p style={customer.name === props.selectedCustomer.name ? { color: '#0cd30d'}: null}>
