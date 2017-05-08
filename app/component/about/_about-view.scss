@@ -1,0 +1,17 @@
+.about{
+  margin-top: 30px;
+  img{
+    float: left;
+    border: black 2px solid;
+    width: 25%;
+  }
+  article{
+    margin-left: 30%;
+    h1{
+      display: block;
+    }
+    p{
+      line-height: 200%;
+    }
+  }
+}

@@ -289,7 +289,7 @@ class Home extends React.Component {
             onDelete={this.deleteEmployee}/>}
 
         {this.state.employees[0] && this.state.restaurants[0] &&
-          <button onClick={this.linkEmployee}> Link Actives </button>}
+          <button className='inspect' onClick={this.linkEmployee}> Assign Employee </button>}
       </div>
     );
   }
