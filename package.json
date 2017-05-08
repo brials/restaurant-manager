@@ -44,7 +44,8 @@
     "react-select": "^1.0.0-rc.3",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.3",
-    "url-loader": "^0.5.8"
+    "url-loader": "^0.5.8",
+    "webpack": "^2.5.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -62,7 +63,6 @@
     "karma-mocha-reporter": "^2.2.3",
     "karma-webpack": "^2.0.3",
     "style-loader": "^0.16.1",
-    "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.5"
   }
 }
