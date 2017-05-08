@@ -66,5 +66,21 @@ module.exports = {
       console.log('success', res.data);
       return res.data;
     });
+  },
+  clockOut(emp){
+    let url = `${__API_URL__}/api/employee/${emp._id}`; //eslint-disable-line
+    let config = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        Authorization: `Bearer ${localStorage.token}` //eslint-disable-line
+      }
+    };
+
+    return axios.put(url, {name: emp.name,employeeTitle: emp.employeeTitle, tables: []}, config)
+    .then(res => {
+      console.log('employee clocked out', res.data);
+      return res.data;
+    });
   }
 };

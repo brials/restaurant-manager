@@ -1,0 +1,57 @@
+.restaurant-view{
+  margin-top: 3vw;
+  .restaurant-details{
+    float:left;
+    margin-right: 20%;
+    h2{
+      font-size: 2vw;
+    }
+    p{
+      font-size: 1.3vw;
+    }
+  }
+  .employee-select{
+    li{
+      float:left;
+    }
+    margin-top: 3vw;
+    h2{
+      font-size: 2vw;
+    }
+    p{
+      font-size: 1.3vw;
+    }
+  }
+  .clock {
+    clear: left;
+    padding: 1%;
+    border-radius: 17px;
+    background: #0cd30d;
+    color: white;
+    box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    font-size: 1vw;
+    margin-right: 3%;
+  }
+  .table-select{
+    margin-top: 3%;
+    h2{
+      font-size: 2vw;
+    }
+    .table-square{
+      float: left;
+      width: 200px;
+      height: 200px;
+      margin: 30px;
+      box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.5);
+      p{
+        color: white;
+      }
+      button{
+        margin-left: 15px;
+        padding: 5% 15%;
+        border-radius: 8px;
+        background: white;
+      }
+    }
+  }
+}

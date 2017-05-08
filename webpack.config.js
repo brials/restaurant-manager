@@ -39,7 +39,7 @@ module.exports = {
         loader: 'html-loader'
       },
       {
-        test: /\.(gif|png|jpe?g|svg|ico)$/i,
+        test: /\.(gif|png|jpg|svg|ico)$/i,
         loader: 'file-loader?hash=sha512&digest=hex&name=[hash].[ext]'
       },
       {
