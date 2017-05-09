@@ -114,12 +114,31 @@ class RestaurantView extends React.Component {
     restApi.fetchRestaurant(this.props.match.url.match(/[^/]+$/g)[0])
     .then(res => {
       this.setState(() => {
-        return {
-          restaurant: res,
-          activeTable: res.tables[0],
-          activeEmployee: res.employees[0],
-          loading: false
-        };
+        if(res.tables.length && res.employees.length){
+          return {
+            restaurant: res,
+            activeTable: res.tables[0],
+            activeEmployee: res.employees[0],
+            loading: false
+          };
+        } else  if(res.tables.length && !res.employees.length){
+          return {
+            restaurant: res,
+            activeTable: res.tables[0],
+            loading: false
+          };
+        } else if(!res.tables.length && res.employees.length){
+          return {
+            restaurant: res,
+            activeEmployee: res.employees[0],
+            loading: false
+          };
+        } else if(!res.tables.length && !res.employees.length){
+          return {
+            restaurant: res,
+            loading: false
+          };
+        }
       });
     });
   }

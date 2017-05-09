@@ -53,10 +53,10 @@ function EmployeeSelect(props){
       <ul>
         {props.employees.map(emp => {
           return (
-            <li
+            <li onClick={props.onSelect.bind(null, emp)}
             style={emp.name === props.selectedEmployee.name ? { color: '#0cd30d'}: null}
               key={emp.name}>
-              <p onClick={props.onSelect.bind(null, emp)}>{emp.name}</p>
+              <p>{emp.name}</p>
               <p> Hours Logged: {emp.hoursLogged}</p>
               <p> Title: {emp.employeeTitle} </p>
               <button onClick={props.onDelete.bind(null, emp)}> delete </button>

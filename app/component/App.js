@@ -21,7 +21,7 @@ class App extends React.Component {
   render(){
     return (
       <Router>
-        <div>
+        <div className='entirety'>
           <Nav />
           <div className='container' >
             {!localStorage.token && //eslint-disable-line
@@ -38,6 +38,7 @@ class App extends React.Component {
                 }} />
               </Switch>
           </div>
+          <div className='barrier'></div>
           <footer> </footer>
         </div>
       </Router>

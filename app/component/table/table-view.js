@@ -135,6 +135,7 @@ class TableView extends React.Component{
       this.setState(() => {
         return {
           restaurant: rest,
+          activeMenuItem: rest.menuitems[0]
         };
       });
     });
@@ -166,7 +167,8 @@ class TableView extends React.Component{
       this.setState(() => {
         return {
           table: table,
-          customers: this.tempCustomers
+          customers: this.tempCustomers,
+          selectedCustomer: this.tempCustomers[0],
         };
       });
     });
@@ -215,18 +217,20 @@ class TableView extends React.Component{
           ? <Loading />
           : <div>
               <CreateMenuItem onSubmit={this.postMenuItem} />
-              <MenuItemSelect
+              {this.state.restaurant.menuitems[0] &&
+                <MenuItemSelect
                 onSelect={this.updateMenuItem}
                 menuItems={this.state.restaurant.menuitems}
-                selectedMenuItem={this.state.activeMenuItem}/>
+                selectedMenuItem={this.state.activeMenuItem}/>}
               <AddCustomer
                 onSubmit={this.addCustomer}/>
-              <CustomerSelect
+              {this.state.customers[0] &&
+                <CustomerSelect
                 onSelect={this.updateCustomer}
                 selectedCustomer={this.state.activeCustomer}
                 customers={this.state.customers}
                 onPurchase={this.onPurchase}
-                checkout={this.checkout}/>
+                checkout={this.checkout}/>}
               {this.state.sum > 0 &&
                 <p> The total for that customer is ${this.state.sum}</p>}
             </div>}

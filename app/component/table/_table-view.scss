@@ -36,6 +36,9 @@
   .customer-select {
 
     .customer-square{
+      &:hover{
+        cursor: pointer;
+      }
       overflow: auto;
       color: white;
       display: block;
