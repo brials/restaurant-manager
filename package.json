@@ -41,6 +41,7 @@
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.2",
     "pascalcase": "^0.1.1",
+    "prop-types": "^15.5.10",
     "query-string": "^4.3.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
