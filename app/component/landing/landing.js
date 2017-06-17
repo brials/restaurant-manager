@@ -1,10 +1,10 @@
 const React = require('react');
 const Auth = require('../../service/auth-service');
 const PropTypes = require('prop-types');
-const ReactRouter = require('react-router-dom');
+const ReactRouter = require('react-router-dom'); //eslint-disable-line
 const Redirect = require('react-router').Redirect //eslint-disable-line
 
-require('./_landing.scss')
+require('./_landing.scss');
 
 class SignUp extends React.Component {
   constructor(props){
@@ -149,7 +149,8 @@ class Landing extends React.Component {
         <SignUp viewShown={view} onSubmit={this.handleSubmit}/>
 
         <button className='btn-std' onClick={this.updateView}>{hidden} instead?</button>
-
+        <h2> Welcome to my React App Restaurant Manager </h2>
+        <p> The backend may take a minute to start up as it goes to sleep without use so please be patient. The idea of the app is to have a management system that can be used for a restaurant by either a manager or a server depending on what view they are in. </p>
         {this.state.loggedIn &&
           <Redirect to='/home'/>}
       </div>
